@@ -1,0 +1,24 @@
+{
+  "name": "kanban-local",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A local React Kanban board with validated JSON backups.",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  },
+  "license": "MIT"
+}
