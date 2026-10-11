@@ -1,89 +1,56 @@
 # Kanban Local
 
-A focused React board for moving small tasks from **To do** to **In progress** to **Done**. Everything stays in your browser, with portable JSON backups when you want to move or preserve your board.
+A React task board with three columns: **To do**, **In progress**, and **Done**. This is a small state-management and file-handling project. Cards have a title and description, and the board can be saved to a JSON file.
 
-![Kanban Local interface](docs/preview.png)
+![Kanban Local](docs/preview.png)
 
-## Features
+## Try it
 
-- Create, edit, and delete cards with a title and optional description.
-- Move cards with labeled buttons that work with a mouse or keyboard.
-- Choose any column in the card editor.
-- Save changes automatically in browser local storage.
-- Export the whole board as JSON.
-- Validate an entire imported backup before offering to replace the current board.
-- Export the current board from the import confirmation dialog before replacement.
-- Use responsive columns, native modal dialogs, and labeled form fields.
-
-The initial board contains four clearly written sample cards. Replace them with your own tasks.
-
-## Run locally
-
-Use Node.js **22.12 or newer** and npm.
+Use Node.js 22.12 or newer and npm.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the local address printed by Vite. To build and preview the production bundle:
+Open the address Vite prints. The four starting cards are labeled samples. Add a card such as **Review lecture notes**, use its move buttons to change columns, or select **Edit** to change its details or delete it. Move buttons are usable from the keyboard too.
 
-```sh
-npm run build
-npm run preview
-```
+Changes are saved in this browser under `kanban-local.v1`. There is no server or account. Use one tab at a time: open tabs do not sync, and the last save wins. Clearing browser data removes the board. If saving fails, a warning appears and you can export the board still held in memory.
 
-## JSON backups
+## Moving a board between browsers
 
-Export downloads `kanban-board.json`. The format is small and versioned:
+**Export** downloads `kanban-board.json`. **Import** checks the whole file and asks before replacing the current board. You can export the current board from that confirmation dialog first. Invalid or canceled imports leave it alone.
+
+A one-card backup looks like this:
 
 ```json
 {
   "version": 1,
   "cards": [
     {
-      "id": "readme-example",
-      "title": "Ship a small improvement",
-      "description": "Build, test, and document it.",
+      "id": "notes",
+      "title": "Review lecture notes",
+      "description": "Work through the examples again.",
       "column": "todo"
     }
   ]
 }
 ```
 
-Allowed columns are `todo`, `doing`, and `done`. The schema accepts only the fields shown above. Each card needs a unique ID containing 1–64 letters, numbers, underscores, or hyphens; a nonblank title up to 80 characters; and a description up to 1,000 characters. A board can contain up to 200 cards. Import files are limited to 1 MB.
+Only these fields are accepted. Columns are `todo`, `doing`, or `done`; IDs must be unique and contain 1–64 letters, numbers, underscores, or hyphens. Titles allow 80 characters, descriptions allow 1,000, and a board allows 200 cards. The file limit is 1 MB.
 
-Invalid JSON, duplicate IDs, unknown fields, incorrect types, and invalid columns are rejected. Importing is a **whole-board replacement**, not a merge: the app validates every card, shows a confirmation dialog, and replaces the board only when you select **Replace board**. Failed or canceled imports leave your current cards untouched.
+The validation and card operations live in `src/board.js`; `src/main.jsx` handles dialogs, browser storage, and files. Validating before setting React state avoids replacing half the board when a later card in an import is invalid.
 
-## Project structure
-
-```text
-src/main.jsx          React UI, dialogs, storage, and file handling
-src/board.js          Strict schema validation and immutable card operations
-src/style.css         Responsive theme
-test/board.test.js    Built-in Node test runner
-```
-
-## Tests
+## Development
 
 ```sh
 npm test
+npm run build
+npm run preview
 ```
 
-Tests cover card operations, JSON round trips, malformed imports, limits, duplicate IDs, defensive copying, and keeping the current board unchanged when an import is rejected. GitHub Actions is configured to run tests and production builds on Node 22 and 24.
+The seven Node tests exercise card changes, JSON round trips, and rejected imports, including duplicate IDs and a file containing both valid and invalid cards. GitHub Actions runs tests and a production build on Node 22 and 24.
 
-## Storage and limitations
+The board uses buttons instead of drag-and-drop. There is no custom card ordering, undo, due dates, or multiple-board support. Browser-account sync does not carry this data to another device; JSON backups are the way to move it. Unreadable saved data opens the sample board and is only replaced after a change.
 
-The board is saved under `kanban-local.v1` in local storage for this browser and origin. There is no backend, account, analytics, collaboration, or cross-device sync. Clearing browser data removes the saved board; export a backup to keep a portable copy. If saving fails, the app shows a warning and you can still export the board in memory.
-
-Edit in one tab at a time. Open tabs are not synchronized: the last tab to save replaces the stored board. Your board does not follow browser-account sync; use JSON export/import to move it.
-
-This project uses move buttons rather than drag-and-drop. Cards keep their existing relative order inside each column; reordering, multiple boards, due dates, and undo are outside its scope. Unreadable saved data opens the sample board, and a new save happens only after you make a change.
-
-## Stack
-
-React 19 · Vite 7 · JavaScript · CSS · Node's built-in test runner
-
-## License
-
-MIT © 2026 Kenneth Park. See [LICENSE](LICENSE).
+[MIT license](LICENSE) · Kenneth Park

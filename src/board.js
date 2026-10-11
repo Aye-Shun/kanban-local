@@ -36,10 +36,10 @@ export function parseBoard(text) {
 
 export function initialBoard() {
   return { version: 1, cards: [
-    { id: 'ideas', title: 'Collect a few good ideas', description: 'What would make this week feel a little more intentional?', column: 'todo' },
-    { id: 'small', title: 'Choose one small next step', description: 'Keep it concrete. Keep it achievable.', column: 'todo' },
-    { id: 'build', title: 'Make something useful', description: 'An afternoon project, a thoughtful fix, or a tiny improvement.', column: 'doing' },
-    { id: 'start', title: 'A place to begin', description: 'Your board is ready. Edit these sample cards or add your own.', column: 'done' },
+    { id: 'ideas', title: 'Sample: Review notes', description: 'Example task. Replace this card with your own.', column: 'todo' },
+    { id: 'small', title: 'Sample: Plan a weekend project', description: 'Pick a small feature to build.', column: 'todo' },
+    { id: 'build', title: 'Sample: Write a few tests', description: 'Check one normal input and one invalid input.', column: 'doing' },
+    { id: 'start', title: 'Sample: Set up the project', description: 'Sample cards show the three columns. They are not a record of completed work.', column: 'done' },
   ] };
 }
 
